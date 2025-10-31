@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import authRouter from "./routes/Routesauth.js";
 import path from "path";
 import { fileURLToPath } from "url";
+import { ConnectDB } from "./libs/db.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -28,4 +29,5 @@ if (process.env.NODE_ENV === "production") {
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
+  ConnectDB()
 });
