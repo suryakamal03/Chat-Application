@@ -1,6 +1,8 @@
 import User from "../models/User.js";
 import bcrypt from "bcryptjs";
-import { generateToken } from "../libs/utils.js";
+import { generateToken } from "../lib/utils.js";
+import { sendWelcomeEmail } from "../emails/emailHandler.js";
+import "dotenv/config";
 
 export const signup = async (req, res) => {
   const { name, email, password } = req.body;
@@ -42,9 +44,51 @@ export const signup = async (req, res) => {
       email: newUser.email,
       profilePic: newUser.profilePic
     });
+
+  try {
+  await sendWelcomeEmail(saved.name, saved.email, process.env.CLIENT_URL);
+  console.log("Sending welcome email to:", email, "with link:", process.env.CLIENT_URL);
+
+} catch (error) {
+  console.error("Failed to send welcome email", error);
+}
+
+  }else{
+    res.status(400).json({message:"Invalid user data"})
   }
   } catch (err) {
     console.error("Error in signup controller:", err);
     res.status(500).json({ message: "Internal server error", err });
   }
 };
+
+export const login = async (req,res) => {
+  const {email,password} = req.body;
+  if(!email || !password){
+    return res.status(400).json({message:"email and password are required"})
+  }
+  try{
+    const user = await User.findOne({email})
+    if(!user){
+      return res.status(400).json({message:"Invalid Credentials"})
+    }
+    const ispassword = await bcrypt.compare(password,user.password)
+    if(!ispassword){
+      return res.status(400).json({message:"Invalid Credentials"})
+    }
+    generateToken(user._id,res)
+    res.status(201).json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      profilePic: user.profilePic
+    });
+  }catch(err){
+    console.error("Error in login controller",err);
+    res.status(500).json({message:"server error"})
+  }
+}
+export const logout = (_,res) => {
+  res.cookie("jwt","",{MaxAge:0})
+  res.status(200).json({message:"Logout successfully"})
+}
