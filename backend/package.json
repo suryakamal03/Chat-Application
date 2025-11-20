@@ -12,7 +12,10 @@
   "license": "ISC",
   "type": "module",
   "dependencies": {
+    "@arcjet/inspect": "^1.0.0-beta.15",
+    "@arcjet/node": "^1.0.0-beta.15",
     "bcryptjs": "^3.0.2",
+    "chat-application": "file:..",
     "cloudinary": "^2.8.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
@@ -22,6 +25,7 @@
     "mongoose": "^8.19.2",
     "node": "^25.1.0",
     "nodemon": "^3.1.10",
+    "path": "^0.12.7",
     "resend": "^6.4.0",
     "socket.io": "^4.8.1"
   }
