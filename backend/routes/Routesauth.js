@@ -1,16 +1,18 @@
-import express from "express"
-import {signup,login,logout,updateProfile} from '../controllers/authcontroller.js'
-import { protectRoute } from '../middleware/authmiddleware.js';
+import express from "express";
+import { signup, login, logout, updateProfile } from "../controllers/authcontroller.js";
+import { protectRoute } from "../middleware/authmiddleware.js";
+import { arcjetProtection } from "../middleware/arcjetmiddleware.js";
 
-const Router = express.Router()
+const router = express.Router();
 
-Router.post('/signup',signup)
+router.use(arcjetProtection);
 
-Router.post('/login',login)
+router.post("/signup", signup);
+router.post("/login", login);
+router.post("/logout", logout);
 
-Router.post('/logout',logout)
+router.put("/update-profile", protectRoute, updateProfile);
 
-Router.put('/update-profile',protectRoute,updateProfile)
+router.get("/check", protectRoute, (req, res) => res.status(200).json(req.user));
 
-Router.get("/check",protectRoute,(req,res)=> res.status(200).json(req.user))
-export default Router
+export default router;
