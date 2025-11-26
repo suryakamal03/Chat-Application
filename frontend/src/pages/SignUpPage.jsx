@@ -1,6 +1,6 @@
 import React ,{useState}from 'react'
 import { useAuthStore } from '../store/useAuthStore'
-import { MessageSquare,Eye ,EyeOff, Loader} from "lucide-react";
+import { MessageSquare,Eye ,EyeOff, Loader,LockIcon,UserRound,Mail} from "lucide-react";
 import toast from 'react-hot-toast';
 import { Link } from 'react-router';
 function SignUpPage() {
@@ -34,13 +34,16 @@ function SignUpPage() {
           <label className="block text-gray-300 mb-2">
             Full Name
           </label>
+          <div className="relative">
+          <UserRound className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" size={20} />
           <input
             type="text"
             id="fullName"
             name="fullName"
-            className="w-full bg-[#0f0f0f] border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500 transition-colors"
+            className="w-full bg-[#0f0f0f] border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500 transition-colors pl-10"
             placeholder="Enter your full name" value={formData.name} onChange={(e)=> setFormData({...formData,name:e.target.value})}
           />
+          </div>
         </div>
 
         {/* Email */}
@@ -48,13 +51,16 @@ function SignUpPage() {
           <label  className="block text-gray-300 mb-2">
             Email
           </label>
+          <div className="relative">
+          <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" size={20} />
           <input
             type="email"
             id="email"
             name="email"
-            className="w-full bg-[#0f0f0f] border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500 transition-colors"
+            className="w-full bg-[#0f0f0f] border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500 transition-colors pl-10"
             placeholder="Enter your email" value={formData.email} onChange={(e)=> setFormData({...formData,email:e.target.value})}
           />
+          </div>
         </div>
 
         {/* Password */}
@@ -63,11 +69,12 @@ function SignUpPage() {
             Password
           </label>
           <div className="relative">
+          <LockIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" size={20} />
             <input
               type={showPassword ? "text" : "password"}
               id="password"
               
-              className="w-full bg-[#0f0f0f] border border-white/10 rounded-lg px-4 py-3 pr-12 text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500 transition-colors"
+              className="w-full bg-[#0f0f0f] border border-white/10 rounded-lg px-4 py-3 pr-12 text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500 transition-colors pl-10"
               placeholder="Create a password" value={formData.password} onChange={(e)=> setFormData({...formData,password:e.target.value})}
             />
             <button
