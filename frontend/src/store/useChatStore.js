@@ -1,47 +1,46 @@
 import {create} from 'zustand';
 import { axiosInstance } from '../lib/axios';
 import toast from 'react-hot-toast';
-import { getAllcontacts } from '../../../backend/controllers/messagecontroller';
-
 export const useChatStore = create((set,get)=>({
-  allcontacts:[],
+  allContacts:[],
   chats:[],
   messages:[],
-  activeTab:null,
-  isUserLoading:false,
-  ismessagesLoading:false,
-  issoundEnabled: localStorage.getItem('soundEnabled') === 'true',
+  activeTab:'chats',
+  isUsersLoading:false,
+  SelectedUser: null,
+  isMessagesLoading:false,
+  isSoundEnabled: localStorage.getItem('soundEnabled') === 'true',
   toggleSound:()=>{
-    localStorage.setItem('isSoundEnabled', !get().issoundEnabled);
-    set({issoundEnabled: !get().issoundEnabled})
+    localStorage.setItem('isSoundEnabled', !get().isSoundEnabled);
+    set({isSoundEnabled: !get().isSoundEnabled})
   },
   setActiveTab:(tab)=>set({activeTab:tab}),
   setSelectedUser:(SelectedUser) => set({SelectedUser}),
 
 
-  getAllcontacts: async()=>{
-    set({isUserLoading:true})
+  getAllContacts: async()=>{
+    set({isUsersLoading:true})
     try {
       const res = await axiosInstance.get('/messages/contacts')
-      set({allcontacts:res.data})
+      set({allContacts:res.data})
     } catch (error) {
-      toast.error(error.response.data.message)
+      toast.error(error.response?.data?.message || "Error fetching contacts")
       console.log("Error fetching contacts",error)
     }finally{
-      set({isUserLoading:false})
+      set({isUsersLoading:false})
     }
   },
 
   getMyChatPartners: async()=>{
-    set({isUserLoading:true})
+    set({isUsersLoading:true})
     try {
       const res = await axiosInstance.get('/messages/chats')
-      set({allcontacts:res.data})
+      set({chats:res.data})
     } catch (error) {
-      toast.error(error.response.data.message)
-      console.log("Error fetching contacts",error)
+      toast.error(error.response?.data?.message || "Error fetching chats")
+      console.log("Error fetching chats",error)
     }finally{
-      set({isUserLoading:false})
+      set({isUsersLoading:false})
     }
   }
   

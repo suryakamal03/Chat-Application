@@ -54,7 +54,7 @@ function LoginPage() {
                 id="password"
                 
                 className="w-full bg-[#0f0f0f] border border-white/10 rounded-lg px-4 py-3 pr-12 text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500 transition-colors"
-                placeholder="Create a password" value={formData.password} onChange={(e)=> setFormData({...formData,password:e.target.value})}
+                placeholder="Enter a password" value={formData.password} onChange={(e)=> setFormData({...formData,password:e.target.value})}
               />
               <button
                 type="button" onClick={() => setShowPassword(!showPassword)}

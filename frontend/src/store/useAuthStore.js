@@ -7,12 +7,13 @@ export const useAuthStore = create((set,) => ({
   isCheckingAuth:true,
   isSigningup:false,
   isloggingIn:false,
+  onlineUsers:[],
   checkAuth: async () => {
     try{
       const res = await axiosInstance.get('/auth/check');
-      set({authUser: res.data.user, isCheckingAuth:false});
+      set({authUser: res.data, isCheckingAuth:false});
     }catch(err){
-      console.log("Error is suthcheck",err)
+      console.log("Error in checkAuth",err)
       set({authUser:null, isCheckingAuth:false })
     }finally{
       set({isCheckingAuth:false})
@@ -39,7 +40,7 @@ login: async (data)=>{
     toast.error(error.response?.data?.message || "Something went wrong")
   }
 },
-logout: async(data)=>{
+logout: async()=>{
   try{
     await axiosInstance.post('/auth/logout');
     set({authUser:null})
@@ -47,6 +48,16 @@ logout: async(data)=>{
   }catch(err){
     toast.error("Failed to logout")
     console.log(err)
+  }
+},
+updateProfile: async(data)=>{
+  try {
+    const res = await axiosInstance.put('/auth/update-profile',data);
+    set({authUser: res.data})
+    toast.success("Profile Updated Successfully")
+  } catch (error) {
+    toast.error(error.response.data.message || "Something went wrong")
+    console.log('error in updating',error)
   }
 }
 }))
