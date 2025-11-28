@@ -16,9 +16,9 @@ function SignUpPage() {
     <div className="bg-[#1a1a1a] rounded-2xl p-10 border border-white/10">
       {/* Logo */}
       <div className="flex justify-center mb-10">
-        <div className="bg-gradient-to-br from-emerald-500 to-teal-500 p-3 rounded-xl">
-          <MessageSquare className="w-8 h-8 text-black" strokeWidth={2.5} />
-        </div>
+        <div className="bg-gradient-to-br from-gray to-teal-500 p-3 rounded-xl">
+                    <MessageSquare className="w-10 h-10 text-emerald-500" strokeWidth={2} />
+                  </div>
       </div>
 
       {/* Header */}

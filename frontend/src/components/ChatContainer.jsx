@@ -1,4 +1,4 @@
-import React, { useEffect,useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useChatStore } from "../store/useChatStore";
 import { useAuthStore } from '../store/useAuthStore';
 import ChatHeader from './ChatHeader';
@@ -6,19 +6,24 @@ import NoChatHistoryPlaceholder from './NoChatHistoryPlaceholder';
 import MessageInput from './MessageInput';  
 import MessagesLoadingSkeleton from './MessagesLoadingSkeleton';
 const ChatContainer = () => {
-  const {SelectedUser,getMessagesWithUser,messages,isMessagesLoading} = useChatStore();
+  const {SelectedUser,getMessagesWithUser,messages,isMessagesLoading,subscribeToMessages, unsubscribeFromMessages} = useChatStore();
   const {authUser} = useAuthStore();
   const messagesEndRef = useRef(null);
 
   useEffect(()=>{
     getMessagesWithUser(SelectedUser._id);
-  }, [SelectedUser,getMessagesWithUser])
+    subscribeToMessages();
+    return ()=>{
+      unsubscribeFromMessages();
+    }
+  }, [SelectedUser,getMessagesWithUser,subscribeToMessages,unsubscribeFromMessages])
 
   useEffect(()=>{
     if(messagesEndRef.current){
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages]);
+
   return (
     <div className="flex flex-col h-full w-full">
       <ChatHeader/>

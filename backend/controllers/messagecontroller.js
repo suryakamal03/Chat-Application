@@ -1,6 +1,8 @@
 import cloudinary from "../lib/cloudinary.js";
 import Message from "../models/Message.js"
 import User from "../models/User.js"
+import { io, getReceiverSocketId } from "../lib/socket.js";
+
 export const getAllcontacts = async(req, res) => {
   try {
     const loggedinUserId = req.user._id;
@@ -58,10 +60,17 @@ export const sendMessage = async (req,res) =>{
       image:imageUrl,
     })
     await newMessage.save();
+
+    const receiverSocketId = getReceiverSocketId(receiverId);
+    if(receiverSocketId){
+      io.to(receiverSocketId).emit("newMessage", newMessage);
+      console.log(`✓ Message sent in real-time to ${receiverId}`);
+    }
     //send response in real-time using socket.io
     res.status(201).json(newMessage);
   } catch (error) {
-    
+    console.log("Error in sendMessage controller", error);
+    res.status(500).json({message: "Internal server error"});
   }
 }
 
