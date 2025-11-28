@@ -6,9 +6,16 @@ import { socketAuthMiddleware } from "../middleware/socketAuthMiddleware.js";
 const app = express();
 const server = http.createServer(app);
 
+// Allow both localhost and production URLs for Socket.io
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:5174',
+  process.env.CLIENT_URL, // Your Vercel URL
+].filter(Boolean);
+
 const io = new Server(server, {
   cors: {
-    origin: [process.env.CLIENT_URL],
+    origin: allowedOrigins,
     credentials: true,
   },
 });
