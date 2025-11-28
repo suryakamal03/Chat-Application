@@ -12,7 +12,8 @@ const PORT = process.env.Port || 5000
 // Allow both localhost and production URLs
 const allowedOrigins = [
   'http://localhost:5173',
-  'http://localhost:5174', 
+  'http://localhost:5174',
+   "https://chat-application-ten-zeta.vercel.app", 
   process.env.CLIENT_URL, // Your Vercel URL will be here
 ].filter(Boolean);
 
