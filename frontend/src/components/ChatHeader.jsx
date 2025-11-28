@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react'
 import { useChatStore } from '../store/useChatStore';
 import { XIcon } from 'lucide-react';
+import { useAuthStore } from '../store/useAuthStore';
 function ChatHeader() {
   const {SelectedUser,setSelectedUser} = useChatStore();
+  const {onlineUsers} = useAuthStore();
   useEffect(() => {
   const handleEsckey = (e) => {
     if (e.key === "Escape") {
@@ -38,7 +40,7 @@ function ChatHeader() {
         </div>
         <div>
           <h2 className="text-white font-medium">{SelectedUser.name}</h2>
-          <p className="text-gray-400 text-sm">Online</p>
+          <p className="text-gray-400 text-sm">{`${onlineUsers.includes(SelectedUser._id) ? "online" : "offline"}`}</p>
         </div>
       </div>
       <button 

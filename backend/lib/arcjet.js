@@ -1,15 +1,15 @@
 import arcjet, { shield, detectBot, slidingWindow } from "@arcjet/node";
 
-
-
 const aj = arcjet({
   key: process.env.ARCJET_KEY,
+  // Set characteristics based on environment
+  characteristics: process.env.ARCJET_ENV === "development" ? [] : ["ip"],
   rules: [
     // Shield protects your app from common attacks e.g. SQL injection
-    shield({ mode: "LIVE" }),
+    shield({ mode: process.env.ARCJET_ENV === "development" ? "DRY_RUN" : "LIVE" }),
     // Create a bot detection rule
     detectBot({
-      mode: "LIVE", // Blocks requests. Use "DRY_RUN" to log only
+      mode: process.env.ARCJET_ENV === "development" ? "DRY_RUN" : "LIVE",
       // Block all bots except the following
       allow: [
         "CATEGORY:SEARCH_ENGINE", // Google, Bing, etc
@@ -21,7 +21,7 @@ const aj = arcjet({
     }),
     // Create a token bucket rate limit. Other algorithms are supported.
     slidingWindow({
-      mode: "LIVE", // Blocks requests. Use "DRY_RUN" to log only
+      mode: process.env.ARCJET_ENV === "development" ? "DRY_RUN" : "LIVE",
       max: 100,
       interval: 60,
     }),

@@ -38,6 +38,8 @@ export const signup = async (req, res) => {
     const saved =  await newUser.save();
     generateToken(saved._id, res);
 
+    console.log(`✓ New user signed up: ${saved.name} (${saved._id})`);
+
     res.status(201).json({
       _id: newUser._id,
       name: newUser.name,
@@ -77,6 +79,9 @@ export const login = async (req,res) => {
       return res.status(400).json({message:"Invalid Credentials"})
     }
     generateToken(user._id,res)
+    
+    console.log(`✓ User logged in: ${user.name} (${user._id})`);
+    
     res.status(201).json({
       _id: user._id,
       name: user.name,
@@ -88,7 +93,9 @@ export const login = async (req,res) => {
     res.status(500).json({message:"server error"})
   }
 }
-export const logout = (_,res) => {
+export const logout = (req,res) => {
+  const userName = req.user?.name || "Unknown user";
+  console.log(`✓ User logged out: ${userName}`);
   res.cookie("jwt","",{MaxAge:0})
   res.status(200).json({message:"Logout successfully"})
 }
